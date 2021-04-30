@@ -1,5 +1,8 @@
 #include <iostream>
 #include <typeinfo>
+#include "entities/Player.h"
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -48,11 +51,36 @@ void calculator(){
         case '/':
             result = firstNum / secondNum;
             break;
+            default: break;
     }
 
     cout << "Result : " << result << endl;
 }
 
+void battleGenerator(){
+    Player minemobs("minemobs", 5, 20);
+    Player jerome("jerome226", 2, 15);
+
+    while(!jerome.isDead() && !minemobs.isDead()){
+        cout << minemobs.getName() << " attack " << jerome.getName() << endl;
+        jerome.damagePlayer(minemobs.getStrength());
+        cout << jerome.getName() << " has now " << jerome.getHealth() << " ❤️" << endl;
+        this_thread::sleep_for(chrono::milliseconds(2000));
+        if(jerome.isDead()) break;
+        cout << jerome.getName() << " attack " << minemobs.getName() << endl;
+        minemobs.damagePlayer(jerome.getStrength());
+        cout << minemobs.getName() << " has now " << minemobs.getHealth() << " ❤️" << endl;
+        this_thread::sleep_for(chrono::milliseconds(2000));
+    }
+
+    if(jerome.isDead()) {
+        cout << minemobs.getName() << " won the fight" << endl;
+    }else if(minemobs.isDead()){
+        cout << jerome.getName() << " won the fight" << endl;
+    }
+}
+
 int main() {
-    calculator();
+    battleGenerator();
+    //calculator();
 }
